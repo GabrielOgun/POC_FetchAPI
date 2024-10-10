@@ -12,8 +12,10 @@ Para acessar o site proposto por esta prova de conceito (POC), você tem duas op
 
 ### Opção 1: Acesso Online
 
-Você pode visualizar o projeto diretamente no navegador acessando o seguinte link:  
-*(Colocar link quando feito)*
+Você pode visualizar o projeto diretamente no navegador acessando o seguinte link:
+
+[**https://gabrielogun.github.io/POC_FetchAPI/**](https://gabrielogun.github.io/POC_FetchAPI/)
+
 
 ### Opção 2: Acesso Local
 
