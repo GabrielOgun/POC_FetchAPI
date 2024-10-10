@@ -146,4 +146,4 @@ Caso o nome inserido não corresponda a nenhum Pokémon, a resposta não será b
 
 ## Referências
 
-Por fim, incluímos uma lista de referências úteis para aprender mais sobre Media Queries e design responsivo. Essas referências incluem links para documentações e tutoriais que podem ajudar a aprofundar seus conhecimentos no assunto.
+Por fim, incluímos uma lista de referências úteis para aprender mais sobre a função Fetch. Essas referências incluem links para documentações e tutoriais que podem ajudar a aprofundar seus conhecimentos no assunto.
