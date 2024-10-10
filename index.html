@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <title>POC API com fetch</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+    <header class="header-fixo">
+        <nav class="menu">
+            <ul>
+                <li><a href="#definicao">O que é fetch?</a></li>
+                <li><a href="#aplicacoes">Porque usar?</a></li>
+                <li><a href="#como_usar">Funcionamento da PokeAPI</a></li>
+                <li><a href="#fetch_pkm">Aplicação</a></li>
+                <li><a href="#resultados"> Resultado </a></li>
+                <li><a href="#referencias">Referências</a></li>
+            </ul>
+        </nav>
+        <a href="https://github.com/GabrielOgun/POC_FetchAPI" class="repo-link">Repositório</a>
+        <p class="autores">
+            <strong>Feito Por:</strong><br>Artur Valladares<br>Gabriel Marques
+        </p>
+    </header>
+
+    <main class="conteudo-principal">
+        <section class="banner">
+            <h1>Consumo de API com fetch</h1>
+            <p>Esta Prova de Conceito explica o que é e mostra como utilizar o método fetch do javascript para consumo de APIs. Para isso, foi utilizada a API: <a href="https://pokeapi.co">PokéApi</a>  que permite buscar informações de pokémons </p>
+        </section>
+
+        <section id="definicao" class="secao">
+            <h2>O que é fetch?</h2>
+            <p>Fetch é uma função nativa do JavaScript utilizada para realizar requisições HTTP de maneira assíncrona, facilitando a comunicação com APIs para enviar e receber dados. Ao utilizar a Fetch API, o retorno é uma Promise, que representa o resultado de uma operação assíncrona e pode estar em um dos seguintes estados: pendente, concluída com sucesso ou falha.
+            Essa abordagem torna o tratamento de respostas mais simples e o código mais intuitivo. O método fetch recebe como parâmetro obrigatório a URL da requisição e, opcionalmente, um objeto com configurações, como cabeçalhos e métodos HTTP personalizados.
+            <p>
+        </section>
+
+        <section id="aplicacoes" class="secao">
+            <h2>Porque usar a função fetch?</h2>
+            <ul>
+                <li><strong>Modernidade e Suporte:</strong> O fetch é a alternativa moderna ao XMLHttpRequest e é suportado nativamente na maioria dos navegadores modernos. 
+                </li>
+                <li>
+                    <strong>Simplificação de Código: </strong> Ele oferece uma interface mais simples e legível para realizar operações assíncronas.
+                </li>
+                <li>
+                    <strong> Suporte a Promises:</strong> O fetch retorna uma Promise, o que facilita o uso de .then(), .catch() e async/await, tornando o código mais conciso e organizado.
+                </li>
+                <li>
+                    <strong>  Controle Avançado: </strong> Permite customizar requisições com cabeçalhos, métodos HTTP, corpo da requisição e lidar com diferentes formatos de resposta (JSON, texto, binário).
+                </li>
+
+            </ul>
+        </section>
+
+        <section id="como_usar" class="secao">
+            <h2>Funcionamento básico da PokeAPI</h2>
+            <p>Para consumir dados da PokeAPI, é necessário construir a URL com base no nome do Pokémon desejado. No exemplo inicial, o endpoint utilizado é:</p>
+            <pre><code>
+                https://pokeapi.co/api/v2/pokemon/ditto
+            </code></pre>
+            <p>Para buscar informações de diferentes Pokémon, basta substituir "ditto" pela variável correspondente ao nome desejado:</p>
+            <pre><code>
+                https://pokeapi.co/api/v2/pokemon/${pokemonName}
+            </code></pre>
+            <p>Dessa forma, a função pode receber o nome do Pokémon como argumento e montar a URL dinamicamente, permitindo realizar a requisição para qualquer Pokémon especificado.</p>
+
+            <p>A resposta dessa requisição contém um objeto json na seguinte formatação:</p>
+            <img src="retornopokeapi.png" alt="Formatação JSON pokeAPI" style="max-width: 100%; height: auto;">
+
+
+        </section>
+
+        <section id="fetch_pkm" class="secao">
+            <h2>Aplicação</h2>
+            <p>Foi criada uma função que busca as informações de um Pokémon fornecido pelo usuário chamada fetchPkm, como apresentada a seguir:</p>
+            <pre><code >
+                async function fetchPkm() {
+                    try {
+                        const pokemonName = document.getElementById("pokemonName").value.toLowerCase();
+                        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+                
+                        if (!response.ok) {
+                            throw new Error("Não existe esse Pokémon");
+                        }
+                
+                        const data = await response.json();
+                        const pokemonSprite = data.sprites.front_default;
+                        const imgElement = document.getElementById("pokemonSprite");
+                        imgElement.src = pokemonSprite;
+                        imgElement.style.display = "block";
+                    }
+                    catch (error) {
+                        console.error(error);
+                    }
+                }
+            </code></pre>
+
+            <h3>Estrutura da Função </h3>
+            <p>A URL é formada utilizando o valor inserido pelo usuário no campo de entrada com o ID pokemonName e, em seguida, concatenada à URL base da PokeAPI para buscar informações do Pokémon correspondente:</p>
+            <pre><code>
+                &lt;input type="text" id="pokemonName" placeholder="Coloque o nome do pokemon" &gt;
+                &lt;button onclick="fetchPkm()"&gt; Buscar Pokemon &lt;/button&gt;&lt;br&gt;
+                &lt;img src="" alt="Pokemon sprite" id="pokemonSprite" style="display: none"&gt;
+            </code></pre>
+
+            <pre><code>
+                const pokemonName = document.getElementById("pokemonName").value.toLowerCase(); 
+                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+            </code></pre> 
+
+            <p>Após realizar a requisição, o response.ok verifica se a resposta foi bem-sucedida. Caso contrário, lança um erro, que é tratado no bloco catch: </p>
+        
+            <pre><code>
+                if (!response.ok) {
+                    throw new Error("Não existe esse Pokémon");
+                }                
+            </code></pre>
+
+            <p>
+                Se a resposta for válida, o conteúdo é convertido para um objeto JavaScript usando await response.json(), que permite acessar todas as propriedades do Pokémon, como o nome e suas sprites (imagens):
+            </p>
+            <pre><code>
+                const data = await response.json();
+            </code></pre>
+
+            <p>
+                A propriedade sprites.front_default contém a URL da sprite padrão do Pokémon. Essa URL é então atribuída à propriedade src de um elemento &lt;img&gt; no HTML para exibir a imagem correspondente na tela:
+            </p>
+
+            <pre><code>
+                const pokemonSprite = data.sprites.front_default;
+                const imgElement = document.getElementById("pokemonSprite");
+                imgElement.src = pokemonSprite;
+                imgElement.style.display = "block";
+            </code></pre>
+
+            <p>Caso o nome inserido não corresponda a nenhum Pokémon, a resposta não será bem-sucedida, e o response.ok retornará false. Isso faz com que a função dispare um erro, que é capturado no bloco catch e exibido no console. Isso ajuda a identificar facilmente problemas e fornecer feedback ao usuário:</p>
+
+            <pre><code>
+                if (!response.ok) {
+                    throw new Error("Não existe esse Pokémon");
+                }
+                
+                catch (error) {
+                    console.error(error);
+                }                
+            </code></pre>
+
+            <p>O fetch é um método assíncrono, o que significa que ele realiza a requisição em paralelo com a execução do restante do código. Por isso, utilizamos await para pausar a execução até que a resposta seja recebida. Usamos await duas vezes: primeiro para aguardar a resposta do fetch e, em seguida, para converter a resposta para o formato JSON.</p>
+
+            <p>Dessa forma, a função fetchPkm realiza uma busca específica, exibe a imagem do Pokémon correspondente e lida de maneira adequada com falhas de requisição, garantindo uma interação fluida para o usuário.</p>
+           
+        </section>
+
+        <section id="resultado" class="secao">
+            <h1>Resultado</h1>
+            <p>Exemplos de nomes de pokemon: Gengar, Charizard, Togepi e Onix </p>
+
+            <div>
+                <input type="text"  id="pokemonName"  placeholder="Coloque o nome do pokemon" >
+                <button onclick= "fetchPkm()"> Buscar Pokemon </button><br>
+                <img src="" alt="Pokemon sprite" id="pokemonSprite" style="display: none">
+            </div>
+
+        </section>
+
+
+        <section id="referencias" class="secao">
+            <h2>Referências</h2>
+
+            <ul>
+                <li>
+                    <a href="https://www.alura.com.br/artigos/comecando-com-fetch-no-javascript?srsltid=AfmBOooxYIHPbdUY5WzekvbpBdpHvXmLSsT474GvyuHsv4QytEpE_sMt">Começando com fetch no javascript - Alura</a>
+                </li>
+                <li><a href="https://www.w3schools.com/jsref/api_fetch.asp"> JavaScript Fetch API - W3Schools</a></li>
+            </ul>
+
+        </section>
+    </main>
+
+    <script  src="script.js"> </script>
+</body>
+
+</html>
